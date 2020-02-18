@@ -1,0 +1,42 @@
+---
+title: "Enrollment_data"
+author: "Jeremiah Kim"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(tidyverse)
+library(readr)
+library(janitor)
+library(reprex)
+library(gt)
+```
+
+```{r, Enrollment Data}
+data <- read_excel("~/Documents/Gov_1005_Problem_Sets/class-2020-02-18/class_enrollment_summary_by_term2.18.20.xlsx", skip = 3) %>%
+  clean_names()
+```
+
+```{r, biggest departments}
+answer <- data %>% 
+  group_by(course_department) %>% 
+  summarize(total = sum(total)) %>% 
+  arrange(desc(total)) %>% 
+  slice(1:5)
+
+betteranswer <- gt(data = answer) %>% 
+  tab_header(title = "Class Exercise") %>% 
+  cols_label(course_department = "Department", total = "Enrollment") %>% 
+  tab_footnote(footnote = "This was just a practice exercise", locations = cells_title())
+
+betteranswer
+```
+
+```{r}
+
+```
+
+
